@@ -1,150 +1,153 @@
-import { motion } from 'framer-motion'
-import { Link } from 'react-scroll'
-import CountUp from 'react-countup'
-import { ArrowRight, MessageCircle } from 'lucide-react'
-import { stats } from '../constants/content'
-import Reticle from '../utils/Reticle'
+import { useState } from "react";
+import { motion, useReducedMotion } from "motion/react";
+import { ArrowRight, CheckCircle2 } from "lucide-react";
+import Button from "./common/Button.jsx";
+import { hero } from "../data/siteContent.js";
+import { scrollToSection } from "../utils/scrollToSection.js";
 
 export default function Hero() {
+  const [imageFailed, setImageFailed] = useState(false);
+  const prefersReducedMotion = useReducedMotion();
+
+  const container = {
+    hidden: {},
+    show: {
+      transition: { staggerChildren: prefersReducedMotion ? 0 : 0.08 },
+    },
+  };
+  const item = {
+    hidden: { opacity: 0, y: 16 },
+    show: {
+      opacity: 1,
+      y: 0,
+      transition: { duration: prefersReducedMotion ? 0 : 0.5, ease: [0.22, 1, 0.36, 1] },
+    },
+  };
+
   return (
-    <section id="hero" className="relative min-h-screen flex items-center overflow-hidden bg-mist pt-28 pb-16">
-      {/* Ambient gradient blobs */}
-      <div className="absolute -top-24 -right-24 w-[32rem] h-[32rem] bg-grad-radial-royal rounded-full blur-3xl animate-pulse-soft" aria-hidden="true" />
-      <div className="absolute bottom-0 -left-24 w-[28rem] h-[28rem] bg-grad-radial-teal rounded-full blur-3xl animate-pulse-soft" aria-hidden="true" />
-
-      {/* Faint targeting grid, ties to the "Laksh" (aim) concept */}
+    <section
+      id="home"
+      className="relative isolate overflow-hidden bg-gradient-to-br from-[#171126] via-[#3B1E73] to-[#6D28D9] pt-[76px]"
+    >
+      {/* Background image layer with gradient fallback */}
+      <div className="absolute inset-0 -z-20 bg-gradient-to-br from-[#171126] via-[#3B1E73] to-[#6D28D9]">
+        {!imageFailed && (
+          <img
+            src={hero.backgroundImage}
+            alt=""
+            aria-hidden="true"
+            onError={() => setImageFailed(true)}
+            className="h-full w-full object-cover opacity-35"
+            loading="eager"
+          />
+        )}
+      </div>
+      {/* Overlay for text readability */}
       <div
-        className="absolute inset-0 opacity-[0.035] pointer-events-none"
-        style={{
-          backgroundImage:
-            'linear-gradient(#0F172A 1px, transparent 1px), linear-gradient(90deg, #0F172A 1px, transparent 1px)',
-          backgroundSize: '56px 56px',
-        }}
         aria-hidden="true"
+        className="absolute inset-0 -z-10 bg-gradient-to-b from-[#171126]/80 via-[#221540]/75 to-[#171126]/90"
       />
+      {/* Decorative mesh glow */}
+      <div aria-hidden="true" className="absolute inset-0 -z-10 mesh-glow opacity-70" />
+      <div aria-hidden="true" className="absolute inset-0 -z-10 node-pattern opacity-[0.15]" />
 
-      <div className="container-xl px-6 md:px-10 lg:px-16 relative z-10 grid lg:grid-cols-[1.1fr_0.9fr] gap-16 items-center">
-        {/* Left: copy */}
-        <div>
-          <motion.div
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-            className="inline-flex items-center gap-2 coord-label text-xs text-royal bg-royal/5 border border-royal/15 rounded-full px-4 py-1.5 mb-7"
+      <div className="relative mx-auto grid max-w-[1240px] gap-14 px-5 py-20 sm:px-8 sm:py-28 lg:grid-cols-[1.15fr_0.85fr] lg:items-center lg:py-32">
+        <motion.div
+          variants={container}
+          initial="hidden"
+          animate="show"
+          className="flex flex-col items-start gap-6"
+        >
+          <motion.span
+            variants={item}
+            className="rounded-full border border-white/20 bg-white/10 px-4 py-1.5 text-xs font-bold tracking-[0.14em] text-white/90"
           >
-            <Reticle size={12} />
-            Precision-built AI systems
-          </motion.div>
+            {hero.eyebrow}
+          </motion.span>
 
           <motion.h1
-            initial={{ opacity: 0, y: 24 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
-            className="font-display font-semibold text-[2.75rem] leading-[1.08] sm:text-6xl lg:text-[3.75rem] text-ink tracking-tight"
+            variants={item}
+            className="max-w-2xl text-[clamp(2.25rem,5vw,3.75rem)] font-extrabold leading-[1.08] text-white"
           >
-            Empowering Businesses{' '}
-            <span className="text-gradient">Through Intelligent</span> AI Solutions
+            {hero.headline}
           </motion.h1>
 
           <motion.p
-            initial={{ opacity: 0, y: 24 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-            className="mt-6 text-lg text-ink-soft max-w-xl leading-relaxed"
+            variants={item}
+            className="max-w-xl text-[1.0625rem] leading-relaxed text-white/80"
           >
-            Laksh AI designs, builds, and deploys enterprise-grade AI systems —
-            from generative AI and LLM applications to autonomous agents — engineered
-            to hit the outcomes that actually matter to your business.
+            {hero.supportingText}
           </motion.p>
 
-          <motion.div
-            initial={{ opacity: 0, y: 24 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
-            className="mt-9 flex flex-wrap items-center gap-4"
-          >
-            <Link
-              to="services"
-              smooth
-              duration={600}
-              offset={-80}
-              className="cursor-pointer group inline-flex items-center gap-2 bg-ink text-white font-semibold px-7 py-3.5 rounded-full hover:bg-royal transition-all duration-300 shadow-glow-royal"
+          <motion.div variants={item} className="flex flex-wrap gap-3 pt-2">
+            <Button
+              href="#contact"
+              size="lg"
+              onClick={(e) => {
+                e.preventDefault();
+                scrollToSection("#contact");
+              }}
             >
-              Explore Services
-              <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
-            </Link>
-            <Link
-              to="contact"
-              smooth
-              duration={600}
-              offset={-80}
-              className="cursor-pointer inline-flex items-center gap-2 border border-ink/15 text-ink font-semibold px-7 py-3.5 rounded-full hover:border-teal hover:text-teal transition-colors duration-300"
+              {hero.primaryCta}
+              <ArrowRight size={18} aria-hidden="true" />
+            </Button>
+            <Button
+              href="#solutions"
+              variant="outlineOnDark"
+              size="lg"
+              onClick={(e) => {
+                e.preventDefault();
+                scrollToSection("#solutions");
+              }}
             >
-              <MessageCircle size={18} />
-              Contact Us
-            </Link>
+              {hero.secondaryCta}
+            </Button>
           </motion.div>
 
-          {/* Animated stats */}
-          <motion.div
-            initial={{ opacity: 0, y: 24 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 0.4, ease: [0.16, 1, 0.3, 1] }}
-            className="mt-14 grid grid-cols-2 sm:grid-cols-4 gap-6 max-w-xl"
+          <motion.ul
+            variants={item}
+            className="mt-4 grid grid-cols-1 gap-x-8 gap-y-3 sm:grid-cols-2"
           >
-            {stats.map((stat) => (
-              <div key={stat.label}>
-                <div className="font-display font-semibold text-3xl text-ink">
-                  <CountUp end={stat.value} duration={2.2} enableScrollSpy scrollSpyOnce suffix={stat.suffix} />
-                </div>
-                <div className="text-xs text-ink-soft mt-1 coord-label">{stat.label}</div>
-              </div>
+            {hero.trustIndicators.map((indicator) => (
+              <li key={indicator} className="flex items-center gap-2 text-sm text-white/85">
+                <CheckCircle2 size={16} className="shrink-0 text-[#A78BFA]" aria-hidden="true" />
+                {indicator}
+              </li>
             ))}
-          </motion.div>
-        </div>
+          </motion.ul>
+        </motion.div>
 
-        {/* Right: visual signature — targeting reticle constellation */}
+        {/* Floating AI delivery framework card */}
         <motion.div
-          initial={{ opacity: 0, scale: 0.92 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.9, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-          className="relative hidden lg:flex items-center justify-center h-[30rem]"
+          initial={{ opacity: 0, y: prefersReducedMotion ? 0 : 26 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: prefersReducedMotion ? 0 : 0.6, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
+          className="hidden lg:block"
         >
-          <div className="absolute inset-0 rounded-full bg-grad-primary opacity-[0.06] blur-2xl" />
-
-          {/* Concentric aim rings */}
-          <div className="relative w-96 h-96 flex items-center justify-center">
-            <div className="absolute inset-0 rounded-full border border-ink/10 animate-spin-slow" />
-            <div className="absolute inset-8 rounded-full border border-royal/20" />
-            <div className="absolute inset-16 rounded-full border border-teal/25" />
-            <div className="absolute inset-28 rounded-full bg-white shadow-card flex items-center justify-center">
-              <Reticle size={40} className="text-teal" />
-            </div>
-
-            {/* Floating coordinate cards */}
-            <motion.div
-              className="absolute -left-6 top-8 bg-white shadow-card rounded-xl px-4 py-3 animate-float"
-            >
-              <div className="coord-label text-[10px] text-ink-faint mb-0.5">LLM.ACCURACY</div>
-              <div className="font-display font-semibold text-ink text-sm">98.2%</div>
-            </motion.div>
-
-            <motion.div
-              className="absolute -right-8 top-24 bg-white shadow-card rounded-xl px-4 py-3 animate-float-delay"
-            >
-              <div className="coord-label text-[10px] text-ink-faint mb-0.5">LATENCY</div>
-              <div className="font-display font-semibold text-ink text-sm">180ms</div>
-            </motion.div>
-
-            <motion.div
-              className="absolute -left-2 bottom-6 bg-white shadow-card rounded-xl px-4 py-3 animate-float"
-            >
-              <div className="coord-label text-[10px] text-ink-faint mb-0.5">UPTIME</div>
-              <div className="font-display font-semibold text-ink text-sm">99.98%</div>
-            </motion.div>
-          </div>
+          <motion.div
+            animate={prefersReducedMotion ? {} : { y: [0, -10, 0] }}
+            transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+            className="ml-auto w-full max-w-sm rounded-[22px] border border-white/15 bg-white/10 p-6 shadow-2xl shadow-black/20 backdrop-blur-md"
+          >
+            <p className="text-xs font-bold tracking-[0.12em] text-white/60">
+              {hero.frameworkCard.title.toUpperCase()}
+            </p>
+            <ul className="mt-5 flex flex-col gap-4">
+              {hero.frameworkCard.stages.map((stage, index) => (
+                <li key={stage} className="flex items-center gap-3">
+                  <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-[#7C3AED] to-[#C026D3] text-xs font-bold text-white">
+                    {index + 1}
+                  </span>
+                  <span className="text-sm font-semibold text-white">{stage}</span>
+                  {index < hero.frameworkCard.stages.length - 1 && (
+                    <span aria-hidden="true" className="ml-auto h-6 w-px bg-white/15" />
+                  )}
+                </li>
+              ))}
+            </ul>
+          </motion.div>
         </motion.div>
       </div>
     </section>
-  )
+  );
 }

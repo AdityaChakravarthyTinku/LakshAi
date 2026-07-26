@@ -1,44 +1,58 @@
-import Navbar from './components/Navbar'
-import Hero from './components/Hero'
-import About from './components/About'
-import WhyChooseUs from './components/WhyChooseUs'
-import Services from './components/Services'
-import Solutions from './components/Solutions'
-import Industries from './components/Industries'
-import TechMarquee from './components/TechMarquee'
-import Process from './components/Process'
-import Team from './components/Team'
-import Testimonials from './components/Testimonials'
-import CaseStudies from './components/CaseStudies'
-import FAQ from './components/FAQ'
-import BlogPreview from './components/BlogPreview'
-import Contact from './components/Contact'
-import Footer from './components/Footer'
-import { ScrollProgressBar, BackToTop } from './components/ScrollUtils'
+import { useState } from "react";
+import Header from "./components/Header.jsx";
+import Hero from "./components/Hero.jsx";
+import CapabilityStrip from "./components/CapabilityStrip.jsx";
+import SolutionsSection from "./components/SolutionsSection.jsx";
+import AboutSection from "./components/AboutSection.jsx";
+import SpecialistsSection from "./components/SpecialistsSection.jsx";
+import ProcessSection from "./components/ProcessSection.jsx";
+import WhyLakshSection from "./components/WhyLakshSection.jsx";
+import EngagementSection from "./components/EngagementSection.jsx";
+import CTASection from "./components/CTASection.jsx";
+import ContactSection from "./components/ContactSection.jsx";
+import Footer from "./components/Footer.jsx";
+import ScrollToTop from "./components/common/ScrollToTop.jsx";
+import { scrollToSection } from "./utils/scrollToSection.js";
 
 export default function App() {
+  // Lifted so "Discuss This Solution" / "Discuss This Model" CTAs elsewhere on
+  // the page can preselect the right option in the contact form.
+  const [contactPreset, setContactPreset] = useState({
+    service: null,
+    engagement: null,
+    nonce: 0,
+  });
+
+  function handleDiscussService(serviceTitle) {
+    setContactPreset({ service: serviceTitle, engagement: null, nonce: Date.now() });
+    scrollToSection("#contact");
+  }
+
+  function handleDiscussEngagement(engagementTitle) {
+    setContactPreset({ service: null, engagement: engagementTitle, nonce: Date.now() });
+    scrollToSection("#contact");
+  }
+
   return (
-    <div className="relative">
-      <ScrollProgressBar />
-      <Navbar />
-      <main>
+    <>
+      <a href="#main-content" className="skip-link focus-ring">
+        Skip to main content
+      </a>
+      <Header />
+      <main id="main-content">
         <Hero />
-        <About />
-        <WhyChooseUs />
-        <Services />
-        <Solutions />
-        <Industries />
-        <TechMarquee />
-        <Process />
-        <Team />
-        <Testimonials />
-        <CaseStudies />
-        <FAQ />
-        <BlogPreview />
-        <Contact />
+        <CapabilityStrip />
+        <SolutionsSection onDiscussService={handleDiscussService} />
+        <AboutSection />
+        <SpecialistsSection onDiscussService={handleDiscussService} />
+        <ProcessSection />
+        <WhyLakshSection />
+        <EngagementSection onDiscussEngagement={handleDiscussEngagement} />
+        <CTASection />
+        <ContactSection preset={contactPreset} />
       </main>
       <Footer />
-      <BackToTop />
-    </div>
-  )
+      <ScrollToTop />
+    </>
+  );
 }
