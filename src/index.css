@@ -1,0 +1,136 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+* {
+  scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+html, body {
+  overflow-x: hidden;
+  width: 100%;
+}
+
+body {
+  @apply bg-mist text-ink font-body antialiased;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  @apply font-display;
+}
+
+::selection {
+  background-color: #14B8A6;
+  color: #fff;
+}
+
+/* Visible keyboard focus */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible {
+  outline: 2px solid #14B8A6;
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+/* Reticle signature mark */
+.reticle {
+  position: relative;
+  width: 1.1rem;
+  height: 1.1rem;
+  flex-shrink: 0;
+}
+.reticle::before,
+.reticle::after {
+  content: '';
+  position: absolute;
+  background: currentColor;
+}
+.reticle::before {
+  left: 50%;
+  top: 0;
+  width: 1px;
+  height: 100%;
+  transform: translateX(-50%);
+}
+.reticle::after {
+  top: 50%;
+  left: 0;
+  height: 1px;
+  width: 100%;
+  transform: translateY(-50%);
+}
+.reticle-dot {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: currentColor;
+  transform: translate(-50%, -50%);
+}
+
+/* Coordinate label mono styling */
+.coord-label {
+  font-family: 'JetBrains Mono', monospace;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+}
+::-webkit-scrollbar-track {
+  background: #F8FAFC;
+}
+::-webkit-scrollbar-thumb {
+  background: #CBD5E1;
+  border-radius: 999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #14B8A6;
+}
+
+/* Marquee track */
+.marquee-track {
+  display: flex;
+  width: max-content;
+  animation: marquee 32s linear infinite;
+}
+.marquee-track:hover {
+  animation-play-state: paused;
+}
+
+/* Gradient text */
+.text-gradient {
+  background: linear-gradient(135deg, #2563EB 0%, #14B8A6 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* Section padding rhythm */
+.section {
+  @apply px-6 md:px-10 lg:px-16 py-20 md:py-28;
+}
+
+.container-xl {
+  @apply max-w-7xl mx-auto;
+}
