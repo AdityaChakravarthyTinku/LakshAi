@@ -11,14 +11,14 @@ export const brand = {
     "AI solutions, data platforms, and software products engineered for measurable business outcomes.",
   shortDescription:
     "Laksh AI helps organizations transform business challenges into dependable AI-powered products, scalable data systems, and modern software. From early discovery and prototyping to production deployment and dedicated engineering teams, we provide focused technical expertise without unnecessary complexity.",
-  domain: "https://www.yourdomain.com",
+  domain: "https://www.lakshaisol.com",
 };
 
 // Centralize all contact placeholders here so they can be replaced in one place.
 export const contactInfo = {
-  office: "Bengaluru, Karnataka, India",
-  phone: "+91 00000 00000",
-  email: "hello@yourdomain.com",
+  office: "33875,9th St Union City, CA 94587",
+  phone: "+1 512-515-3171",
+  email: "Hr@lakshaisol.com",
   hours: "Monday\u2013Friday, 9:00 AM\u20136:00 PM",
 };
 
